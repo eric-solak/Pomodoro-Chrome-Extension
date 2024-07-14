@@ -1,0 +1,117 @@
+/* General styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    text-align: center;
+    background: #ffffff;
+    padding: 0.9rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    color: #ff6f61;
+}
+
+.timer {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.functionality {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+button {
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #ff4f41;
+}
+
+button:active {
+    background-color: #d6453d;
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 111, 97, 0.5);
+}
+
+/* Pomodoro rounds and break display */
+.rounds {
+    margin-top: 0rem;
+    font-size: 1.1rem;
+}
+
+.rounds span {
+    font-weight: bold;
+    color: #555;
+}
+
+.rounds .value {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    margin-left: 0.5rem;
+}
+
+.rounds .break {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    color: #777;
+}
+
+.rounds2 {
+    margin-top: 0.2rem;
+    font-size: 1.1rem;
+}
+
+.rounds2 span {
+    font-weight: bold;
+    color: #555;
+}
+
+.rounds2 .value {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    margin-left: 0.5rem;
+}
+
+.rounds2 .break {
+    margin-top: 0rem;
+    font-size: 1rem;
+    color: #777;
+}
+
+.break {
+    text-align: center;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    font-size: 1rem;
+
+}

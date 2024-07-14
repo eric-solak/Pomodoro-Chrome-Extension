@@ -1,0 +1,22 @@
+{
+    "name": "Pomodoro Timer",
+    "version": "1.0",
+    "description": "This is an extension to assist productivity through the use of the Pomodoro Technique",
+    "manifest_version": 3,
+    "author": "Eric Solak",
+    "action": {
+        "default_popup": "popup/popup.html"
+    },
+    "icons": {
+        "16": "images/icon-16.png"
+    },
+    "background": {
+        "service_worker": "background/background.js",
+        "type": "module"
+        },
+    "permissions": [
+        "notifications",
+        "storage",
+        "alarms"
+    ]
+}
