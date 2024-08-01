@@ -1,7 +1,6 @@
 {
     "name": "Pomodoro Timer",
-    "version": "1.0",
-    "description": "This is an extension to assist productivity through the use of the Pomodoro Technique",
+    "version": "1.1",
     "manifest_version": 3,
     "author": "Eric Solak",
     "action": {

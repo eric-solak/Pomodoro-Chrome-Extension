@@ -1,34 +1,56 @@
 /* General styles */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f9;
+    background-color: #ffffff;
     color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    width: 63vh;
     margin: 0;
+
 }
+
 
 .container {
     text-align: center;
     background: #ffffff;
-    padding: 0.9rem;
+    padding: 8vh;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
 }
 
-h2 {
+.container input[type="number"] {
+    width: 9vh;
+    padding: 8px;
     text-align: center;
-    margin-bottom: 1rem;
-    font-size: 2rem;
-    color: #ff6f61;
+    margin-bottom: 0.5rem;
+    border: 0.1px solid #cccccc60;
+    border-radius: 6px;
+   
+}
+
+
+.container label[for="workTimeValue"] {
+    font-size: 1rem;
+}
+
+.container label[for="breakTimeValue"] {
+    font-size: 1rem;
+}
+
+.container label[for="longBreakTimeValue"] {
+    font-size: 1rem;
+}
+
+hr {
+    margin-bottom: 5vh;
 }
 
 .timer {
-    font-size: 3rem;
-    margin-bottom: 1.5rem;
-    color: #333;
+    font-size: 2.5rem;
+    color: #000000;
 }
 
 .functionality {
@@ -38,33 +60,47 @@ h2 {
 }
 
 button {
-    background-color: #ff6f61;
+    width: 100px;
+    height: 40px;
     color: white;
     border: none;
-    padding: 0.75rem 1.5rem;
+    padding: 0.25rem;
     border-radius: 5px;
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
-button:hover {
-    background-color: #ff4f41;
+button#reset {
+    background-color: #ffb62f;
+    color:#333;
 }
 
-button:active {
-    background-color: #d6453d;
+button#reset:hover {
+    background-color: #eb9800;
 }
 
-button:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(255, 111, 97, 0.5);
+button#toggle.paused {
+    background-color: rgb(11, 170, 11);
 }
+
+button#toggle.paused:hover {
+    background-color: rgb(0, 148, 0);
+}
+
+button#toggle.started {
+    background-color: red;
+}
+
+button#toggle.started:hover {
+    background-color: rgb(216, 3, 3);
+}
+
 
 /* Pomodoro rounds and break display */
 .rounds {
     margin-top: 0rem;
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .rounds span {
@@ -87,7 +123,7 @@ button:focus {
 
 .rounds2 {
     margin-top: 0.2rem;
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .rounds2 span {
@@ -114,4 +150,8 @@ button:focus {
     font-weight: bold;
     font-size: 1rem;
 
+}
+
+.break {
+    font-size: 1rem;
 }
