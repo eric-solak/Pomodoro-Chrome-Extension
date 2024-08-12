@@ -1,116 +1,73 @@
 document.addEventListener('DOMContentLoaded', function() {
-  const toggleButton = document.getElementById('toggle');
-  const resetButton = document.getElementById('reset');
+  const elements = {
+    toggleButton: document.getElementById('toggle'),
+    resetButton: document.getElementById('reset'),
+    timerDisplay: document.getElementById('timer'),
+    roundsDisplay: document.getElementById('pomodoroRounds'),
+    untilBreakDisplay: document.getElementById('roundsUntilBreak'),
+    breakDisplay: document.getElementById('onBreak'),
+    workTimeInput: document.getElementById('workTimeValue'),
+    breakTimeInput: document.getElementById('breakTimeValue'),
+    longBreakTimeInput: document.getElementById('longBreakTimeValue'),
+  };
 
-  const timerDisplay = document.getElementById('timer');
-  const roundsDisplay = document.getElementById('pomodoroRounds');
-  const untilBreakDisplay = document.getElementById('roundsUntilBreak');
-  const breakDisplay = document.getElementById('onBreak');
-
-  const workTimeInput = document.getElementById('workTimeValue');
-  const breakTimeInput = document.getElementById('breakTimeValue');
-  const longBreakTimeInput = document.getElementById('longBreakTimeValue');
+  // Handle general event listener function
+  function handleInputChange(event) {
+    const key = event.target.id.replace('Value', '');
+    const value = parseInt(event.target.value, 10);
+    chrome.storage.local.set({ [key]: value });
+  }
 
   // Event listeners to work time, break time, long break inputs
-  workTimeInput.addEventListener('change', function() {
-    const workTime = parseInt(workTimeInput.value, 10);
-    chrome.storage.local.set({ workTime: workTime }, function() {
-    });
-  });
-
-  breakTimeInput.addEventListener('change', function() {
-    const breakTime = parseInt(breakTimeInput.value, 10);
-    chrome.storage.local.set({ breakTime: breakTime }, function() {
-    });
-  });
-
-  longBreakTimeInput.addEventListener('change', function() {
-    const longBreakTime = parseInt(longBreakTimeInput.value, 10);
-    chrome.storage.local.set({ longBreakTime: longBreakTime }, function() {
-    });
-  });
+  elements.workTimeInput.addEventListener('change', handleInputChange);
+  elements.breakTimeInput.addEventListener('change', handleInputChange);
+  elements.longBreakTimeInput.addEventListener('change', handleInputChange);
 
   // Event listeners to buttons
-  toggleButton.addEventListener('click', function() {
-    sendMessageToBackground({ action: 'onToggle' });
-  });
-
-  resetButton.addEventListener('click', function() {
-    sendMessageToBackground({ action: 'onReset' });
-  });
+  elements.toggleButton.addEventListener('click', () => sendMessageToBackground('onToggle'));
+  elements.resetButton.addEventListener('click', () => sendMessageToBackground('onReset'));
 
   // Function to send message to background script
-  function sendMessageToBackground(message) {
-    chrome.runtime.sendMessage(message, function(response) {
+  function sendMessageToBackground(action) {
+    chrome.runtime.sendMessage({ action }, function(response) {
       console.log('Response from background:', response);
     });
   }
 
-  // Retrieve initial timer settings and update UI
-  chrome.storage.local.get(['workTime', 'breakTime', 'longBreakTime'], function(result) {
-    console.log(result.workTime)
-    if (result.workTime) {
-      workTimeInput.value = result.workTime;
+  // Function to update UI based on timer state from background.js
+  function updateUI({ minutes, seconds, pomodoroRounds, totalRounds, onBreak, isPaused }) {
+    elements.timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+    elements.roundsDisplay.textContent = `Total Rounds Completed: ${totalRounds}`;
+    elements.untilBreakDisplay.innerHTML = `Rounds Until Long Break: ${(pomodoroRounds % 4 === 0 && pomodoroRounds !== 0) ? 0 : 4 - (pomodoroRounds % 4)}`;
+
+    if (isPaused) {
+      elements.toggleButton.textContent = 'Start';
+      elements.toggleButton.classList.add('paused');
+      elements.toggleButton.classList.remove('started');
+    } else {
+      elements.toggleButton.textContent = 'Pause';
+      elements.toggleButton.classList.add('started');
+      elements.toggleButton.classList.remove('paused');
     }
-    if (result.breakTime) {
-      breakTimeInput.value = result.breakTime;
-    }
-    if (result.longBreakTime) {
-      longBreakTimeInput.value = result.longBreakTime;
+
+    elements.breakDisplay.innerHTML = onBreak ? `Break - take a deep breath<br>` : `ㅤ<br>`;
+  }
+
+  chrome.storage.local.get(['workTime', 'breakTime', 'longBreakTime', 'timerState'], function(result) {
+    const { workTime, breakTime, longBreakTime, timerState } = result;
+
+    if (workTime !== undefined) elements.workTimeInput.value = workTime;
+    if (breakTime !== undefined) elements.breakTimeInput.value = breakTime;
+    if (longBreakTime !== undefined) elements.longBreakTimeInput.value = longBreakTime;
+
+    if (timerState) {
+      updateUI(timerState);
     }
   });
 
-  // Listen for changes in timer state and update UI
-  chrome.storage.onChanged.addListener(function(changes, namespace) {
+  chrome.storage.onChanged.addListener(function(changes) {
     if (changes.timerState) {
-      const { minutes, seconds, pomodoroRounds, totalRounds, onBreak, isPaused } = changes.timerState.newValue;
-      timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-      roundsDisplay.textContent = `Total Rounds Completed: ${totalRounds}`;
-      untilBreakDisplay.innerHTML = `Rounds Until Long Break: ${(pomodoroRounds % 4 === 0 && pomodoroRounds !== 0) ? 0 : 4 - (pomodoroRounds % 4)}`;
-      
-      if (isPaused) {
-        toggleButton.textContent = 'Start'
-        toggleButton.classList.add('paused');
-        toggleButton.classList.remove('started');
-      } else {
-        toggleButton.textContent = 'Pause'
-        toggleButton.classList.add('started');
-        toggleButton.classList.remove('paused');
-      }
-      
-      if (onBreak) {
-        breakDisplay.innerHTML = `Break - take a deep breath<br>`;
-      } else {
-        breakDisplay.innerHTML = `ㅤ<br>`;
-      }
+      updateUI(changes.timerState.newValue);
     }
   });
-
-  // Retrieve initial timer state and update UI
-  chrome.storage.local.get(['timerState'], function(result) {
-    if (result.timerState) {
-      const { minutes, seconds, pomodoroRounds, totalRounds, onBreak, isPaused } = result.timerState;
-      timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-      roundsDisplay.textContent = `Total Rounds Completed: ${totalRounds}`;
-      untilBreakDisplay.innerHTML = `Rounds Until Long Break: ${(pomodoroRounds % 4 === 0 && pomodoroRounds !== 0) ? 0 : 4 - (pomodoroRounds % 4)}`;
-      
-      if (isPaused) {
-        toggleButton.textContent = 'Start'
-        toggleButton.classList.add('paused');
-        toggleButton.classList.remove('started');
-      } else {
-        toggleButton.textContent = 'Pause'
-        toggleButton.classList.add('started');
-        toggleButton.classList.remove('paused');
-      }
-
-      if (onBreak) {
-        breakDisplay.innerHTML = `Break - take a deep breath<br>`;
-      } else {
-        breakDisplay.innerHTML = `ㅤ<br>`;
-      }
-    }
-  });
-
-
 });
