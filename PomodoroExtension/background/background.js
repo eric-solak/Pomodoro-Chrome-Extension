@@ -74,7 +74,12 @@ function handleReset(sendResponse) {
 // Function to update timer on alarm trigger
 chrome.alarms.onAlarm.addListener(function (alarm) {
   if (alarm.name === 'pomodoroTimer') {
-    updateTimer();
+    chrome.storage.local.get('timerState', function(result) { //DOES THIS HELP??
+      if (result.timerState) {
+        timerState = result.timerState;
+        updateTimer();
+      }
+    });
   }
 });
 
