@@ -14,3 +14,8 @@
     4) Press on "Load unpacked"
     5) Browse the path you downloaded the extension and choose 'select'
     6) Enjoy!
+    
+## Images
+
+<img width="250" alt="image" src="https://github.com/user-attachments/assets/57364805-65cc-4317-95f8-9675cfb3404e">
+<img width="250" alt="image" src="https://github.com/user-attachments/assets/5b178b5e-b7c5-4693-913b-62e158c16733">
