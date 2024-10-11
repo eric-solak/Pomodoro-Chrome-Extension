@@ -7,6 +7,9 @@
     - Notifications will appear when the timer is up
     
 ## Installation:
+    https://chromewebstore.google.com/detail/pomodoro-timer/nafccgfeopjmbnjchilcpbkdiooccofm
+
+    OR
     
     1) Git clone or download file and unzip into a folder 
     2) Go to the extensions tab on Google Chrome (chrome://extensions/)
